@@ -79,6 +79,8 @@ python main.py
 Example Rsult
 
 ![alt text](img/example_result.png)
+![alt text](img/example_img.png)
+
 
 #### Score
 
