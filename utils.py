@@ -2,13 +2,14 @@ from difflib import get_close_matches
 import re
 from pathlib import Path
 import cv2
+from PIL import Image, ImageDraw, ImageFont
 from data import (
     damage_composition,
     multiplier_weights,
     VALID_MINOR_PROPERTY,
     VALID_MAJOR_PROPERTY,
 )
-from resonator import Echo
+from resonator import Echo, Property
 
 
 def load_image(path: Path) -> cv2.Mat:
@@ -127,22 +128,63 @@ def calculate_property_score(attribute: dict, weight: dict):
 
 
 def calculate_echo_score(echo: Echo, weight: dict, perfect_score: float):
-    attribute_score = calculate_property_score(echo.main_attribute, weight) / perfect_score
+    attribute_score = calculate_property_score(echo.main_attribute.data, weight) / perfect_score
+    echo.main_attribute.set_score(attribute_score)
     energy_regen = (
-        float(echo.main_attribute.get("value")[:-1])
-        if echo.main_attribute.get("property") == "Energy Regen"
+        float(echo.main_attribute.data.get("value")[:-1])
+        if echo.main_attribute.data.get("property") == "Energy Regen"
         else 0
     )
     echo_score = attribute_score
-    attribute_score = calculate_property_score(echo.sub_attribute, weight) / perfect_score
+    attribute_score = calculate_property_score(echo.sub_attribute.data, weight) / perfect_score
+    echo.sub_attribute.set_score(attribute_score)
     energy_regen += (
-        float(echo.sub_attribute.get("value")[:-1])
-        if echo.sub_attribute.get("property") == "Energy Regen"
+        float(echo.sub_attribute.data.get("value")[:-1])
+        if echo.sub_attribute.data.get("property") == "Energy Regen"
         else 0
     )
     echo_score += attribute_score
     for property in echo.property_list:
-        attribute_score = calculate_property_score(property, weight) / perfect_score
-        energy_regen += float(property.get("value")[:-1]) if property.get("property") == "Energy Regen" else 0
+        attribute_score = calculate_property_score(property.data, weight) / perfect_score
+        property.set_score(attribute_score)
+        energy_regen += float(property.data.get("value")[:-1]) if property.data.get("property") == "Energy Regen" else 0
         echo_score += attribute_score
     return echo_score, energy_regen
+
+
+def draw_resonator_stats(
+    background_path: str,
+    output_path: str,
+    resonator: dict,
+    font_path: str = "arial.ttf",
+):
+    img = Image.open(background_path).convert("RGBA")
+    W, H = img.size
+
+    overlay = Image.new("RGBA", img.size, (255, 255, 255, 0))
+    draw = ImageDraw.Draw(overlay)
+
+    total_font = ImageFont.truetype(font_path, size=80)
+    draw.text((30, 150), f"{resonator.score:.2f}", font=total_font, fill="white")
+
+    echo_font = ImageFont.truetype(font_path, size=40)
+    x = 270
+    for i in resonator.echo_list:
+        draw.text((x, 790), f"{i.score:.2f}", font=echo_font, fill="white")
+        x += 375
+
+    out = Image.alpha_composite(img, overlay)
+    out.convert("RGB").save(output_path, "PNG")
+    print(f"Saved annotated image as {output_path!r}")
+    img = cv2.imread(output_path)
+    color = (255, 255, 255)
+    thickness = 1
+    x = 30
+    for i in resonator.echo_list:
+        y = 881
+        for j in i.property_list:
+            if j.score > 0.1:
+                cv2.rectangle(img, (x, y), (x + 350, y + 35), color, thickness)
+            y += 35
+        x += 375
+    cv2.imwrite(output_path, img)

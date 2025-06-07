@@ -1,13 +1,30 @@
 from data import damage_composition
 
 
+class Property:
+    def __init__(self, data: dict):
+        self.data: dict = data
+        self.score: float = 0.0
+
+    def set_score(self, score: float):
+        self.score = score
+        return self
+
+    def __str__(self):
+        return f"{self.data['property']}: {self.data['value']}"
+
+    __repr__ = __str__
+
+
 class Echo:
-    def __init__(self, main_attribute: dict, sub_attribute: dict, cost: int, score: float, property_list: list):
+    def __init__(
+        self, main_attribute: dict, sub_attribute: dict, cost: int, score: float, property_list: list[Property]
+    ):
         self.main_attribute: dict = main_attribute
         self.sub_attribute: dict = sub_attribute
         self.cost: int = cost
         self.score: float = score
-        self.property_list: list = property_list
+        self.property_list: list[Property] = property_list
 
     def set_score(self, score: float):
         self.score = score
@@ -19,8 +36,9 @@ class Echo:
             "score": self.score,
             "main_attribute": self.main_attribute,
             "sub_attribute": self.sub_attribute,
-            "propertyList": self.property_list,
+            "propertyList": [p.data for p in self.property_list],
         }
+
     def __str__(self):
         return (
             "Echo(\n"
@@ -28,27 +46,27 @@ class Echo:
             f"  score:          {self.score},\n"
             f"  main_attribute: {self.main_attribute!r},"
             f"  sub_attribute:  {self.sub_attribute!r},\n"
-            f"  property_list:  {self.property_list!r}\n"
+            f"  property_list:  {[p.data for p in self.property_list]}\n"
             ")"
         )
-    __repr__ = __str__
 
+    __repr__ = __str__
 
 
 class EchoBuilder:
     def __init__(self):
-        self._main_attribute = None
-        self._sub_attribute = {}
+        self._main_attribute: Property = None
+        self._sub_attribute: Property = None
         self._cost = 0
         self._score = 0.0
         self._property_list = []
 
-    def set_main_attribute(self, main_attribute: dict):
+    def set_main_attribute(self, main_attribute: Property):
         self._main_attribute = main_attribute
         return self
 
-    def set_sub_attributes(self, sub_attributes: dict):
-        self._sub_attribute = sub_attributes.copy()
+    def set_sub_attributes(self, sub_attributes: Property):
+        self._sub_attribute = sub_attributes
         return self
 
     def set_cost(self, cost: int):
@@ -59,11 +77,11 @@ class EchoBuilder:
         self._score = score
         return self
 
-    def add_property(self, prop):
+    def add_property(self, prop: Property):
         self._property_list.append(prop)
         return self
 
-    def with_properties(self, props: list):
+    def with_properties(self, props: list[Property]):
         self._property_list = list(props)
         return self
 

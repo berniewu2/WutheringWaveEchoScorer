@@ -44,7 +44,7 @@ for i in range(5):
         cost = 3
     echo_list.append(
         EchoBuilder()
-        .set_main_attribute({"property": property, "value": clean_ocr_value(data[i + 5])})
+        .set_main_attribute(Property({"property": property, "value": clean_ocr_value(data[i + 5])}))
         .set_cost(cost)
     )
 
@@ -52,14 +52,14 @@ sub_data = data[10:]
 
 for i in range(5):
     echo_list[i].set_sub_attributes(
-        {"property": clean_ocr_sub_key(sub_data[i * 2]), "value": clean_ocr_value(sub_data[i * 2 + 1])}
+        Property({"property": clean_ocr_sub_key(sub_data[i * 2]), "value": clean_ocr_value(sub_data[i * 2 + 1])})
     )
 sub_data = sub_data[10:]
 
 for j in range(5):
     for i in range(5):
         echo_list[i].add_property(
-            {"property": clean_ocr_minor_key(sub_data[i * 2]), "value": clean_ocr_value(sub_data[i * 2 + 1])}
+            Property({"property": clean_ocr_minor_key(sub_data[i * 2]), "value": clean_ocr_value(sub_data[i * 2 + 1])})
         )
 
     sub_data = sub_data[10:]
@@ -77,6 +77,13 @@ for i in echo_list:
     resonator.add_energy_regen(energy_regen)
 
 resonator.set_score()
-print('=' * 50)
+print("=" * 50)
 print(resonator)
-print('=' * 50)
+print("=" * 50)
+
+
+draw_resonator_stats(
+    background_path="resonator.jpeg",
+    output_path="resonator_score.png",
+    resonator=resonator,
+)
