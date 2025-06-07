@@ -23,15 +23,15 @@ _Assumes you have five Echoes equipped at +25._
 
 #### 3. [Analyze](#3-analyze)
 
-## 1. Create a character profile from official discord
+## 1. Create a character profile from the official Discord
 
 1. Go to Discord
 
 2. Search **Wuthering Waves Official** and join server
 
-3. find **#bot-command** channel
+3. Find **#bot-command** channel
 
-4. change language to English
+4. Change language to English
 
 ```
 \language English
@@ -45,20 +45,20 @@ _Assumes you have five Echoes equipped at +25._
 ```
 \create
 ```
-then select the character you want to analyze
+Then select the character you want to analyze
 
 7. Rename the image to `resonator.jpeg`
 
 ## 2. Clone & Install
 
-Tested on python 3.10.6
+Tested on Python 3.10.6
 
 1. Clone
 ```
 git clone git@github.com:berniewu2/WutheringWavesEchoScorer.git
 cd WutheringWavesEchoScorer
 ```
-2. move image into the folder
+2. Move the image into the folder
 
 3. Install dependency
 
@@ -72,11 +72,13 @@ pip install paddleocr
 ## 3. Analyze
 
 #### Run the Scorer
-By default it looks for `resonator.jpeg` in the current directory.
+By default, it looks for `resonator.jpeg` in the current directory.
 ```
 python main.py
 ```
-Example Rsult
+The result image will be saved as `resonator_score.png` in the same directory.
+
+Example Result
 
 ![alt text](img/example_result.png)
 ![alt text](img/example_img.png)
@@ -84,10 +86,10 @@ Example Rsult
 
 #### Score
 
-- 100 : Perfect score
+- 100: Perfect score
 - 80 or above: Great
 - 70 or above: Good
 - 60 or above: OK
-- Below 60 : Trash
+- Below 60: Trash
 
 ***Ok** echoes are fine for support or healer, but carry needs at least **good** echoes*
