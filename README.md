@@ -55,8 +55,8 @@ Tested on python 3.10.6
 
 1. Clone
 ```
-git clone https://github.com/berniewu2/WutheringWavesEchoescorer.git
-cd WutheringWavesEchoescorer
+git clone git@github.com:berniewu2/WutheringWavesEchoScorer.git
+cd WutheringWavesEchoScorer
 ```
 2. move image into the folder
 
