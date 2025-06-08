@@ -62,6 +62,8 @@ cd WutheringWavesEchoScorer
 
 3. Install dependency
 
+Install [paddlepaddle](https://www.paddlepaddle.org.cn/en) based on your environment
+
 ```
 # Windows + NVIDIA GPU + CUDA 12.6
 python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
