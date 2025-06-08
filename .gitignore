@@ -198,6 +198,3 @@ crops/
 
 # Ignore all files in the output directory
 output/
-
-# Ignore all files in the input directory
-input/*
