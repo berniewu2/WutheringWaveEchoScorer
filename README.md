@@ -11,7 +11,7 @@ _Assumes you have five Echoes equipped at +25._
 
 - **Python** 3.10 (not 3.12)
 - Tested on **Windows** (CUDA 12.6) and **Linux**  
-- A screenshot of your Resonator’s profile named `resonator.jpeg`
+- A screenshot of your Resonator’s profile
 
 ---
 
@@ -47,7 +47,7 @@ _Assumes you have five Echoes equipped at +25._
 ```
 then select the character you want to analyze
 
-7. Rename the image to `resonator.jpeg`
+7. Move the image to input folder
 
 ## 2. Clone & Install
 
@@ -72,10 +72,12 @@ pip install paddleocr
 ## 3. Analyze
 
 #### Run the Scorer
-By default it looks for `resonator.jpeg` in the current directory.
+By default it looks for all images in the input folder.
 ```
 python main.py
 ```
+Results will be in the output folder.
+
 Example Rsult
 
 ![alt text](img/example_result.png)
