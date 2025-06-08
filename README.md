@@ -9,7 +9,7 @@ _Assumes you have five Echoes equipped at +25._
 
 ## Prerequisites
 
-- **Python** 3.10 (not 3.12)
+- **Python** 3.10
 - Tested on **Windows** (CUDA 12.6) and **Linux**  
 - A screenshot of your Resonator’s profile
 
